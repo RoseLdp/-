@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+  //封装单向链表
+  function LinkedList() {
+    function Item(data) {
+      this.data = data
+      this.next = null
+    }
+    this.head = null
+    this.length = 0
+    //append方法 向列表尾部追加元素
+    LinkedList.prototype.append = function (data) {
+      var item = new Item(data)
+      //判断是否插入的是第一个
+      if (this.length == 0) {
+        this.head = item
+      } else {
+        //找到最后一个节点
+        var current = this.head
+        while (current.next) {
+          current = current.next
+        }
+        //让最后一个的next等于新的值
+        current.next = item
+      }
+      this.length += 1
+    }
+    //toString方法
+    LinkedList.prototype.toString = function () {
+      var current = this.head
+      var str = ''
+      while (current) {
+        str += current.data + ' '
+        current = current.next
+      }
+      return str
+    }
+    //insert方法(data内容,position插入的位置下标)
+    LinkedList.prototype.insert = function (data, position) {
+      var item = new Item(data)
+      if (position < 0 || position > this.length) { return false }
+      if (position == 0) {
+        item.next = this.head
+        this.head = item
+      } else {
+        var index = 0
+        var prev = null
+        //prev插入之前的元素
+        var current = this.head
+        //current插入之后的元素
+        while (index++ < position) {
+          prev = current
+          current = current.next
+        }
+        item.next = current
+        prev.next = item
+        this.length += 1
+      }
+    }
+    //get方法（获取对应位置元素）
+    LinkedList.prototype.get = function (position) {
+      //越界判断
+      if (position < 0 || position >= this.length) { return false }
+      var index = 0
+      var current = this.head
+      while (index++ < position) {
+        current = current.next
+      }
+      return ccurrent.data
+    }
+    //indexOf(element)方法，返回元素在列表的索引，如果没有返回-1
+    LinkedList.prototype.indexOf = function (element) {
+      var index = 0
+      var current = this.head
+      while (index < this.length) {
+        if (current.data == element) {
+          return index
+        } else {
+          current = current.next
+          index++
+        }
+      }
+      return -1
+    }
+    //update(element,position)修改某个位置的元素
+    LinkedList.prototype.update = function (element, position) {
+      var index = 0;
+      var current = this.head
+      if (position < 0 || position >= this.length) { return false }
+      while (index++ < position) {
+        current = current.next
+      }
+      current.data = element
+    }
+    //removeAt(position)按下标删除某个节点
+    LinkedList.prototype.removeAt = function (position) {
+      if (position < 0 || position >= this.length) {
+        return false
+      }
+      var index = 0
+      var current = this.head   //被删除的元素
+      var prev = null   //被删除元素的前面一个元素
+      var afterPrev = null
+      if (position == 0) {
+        this.head = this.head.next
+        this.length--
+      } else {
+        while (index++ < position) {
+          prev = current
+          current = current.next
+        }
+        prev.next = current.next
+        this.length--
+      }
+    }
+    //remove(element)按下标删除某个节点
+    LinkedList.prototype.remove = function (element) {
+      var index = 0
+      var item = new Item(element)
+      var current = this.head
+      var prev = null
+      //当这个数是第一个的时候
+      if (current.data == item.data) {
+        this.head = this.head.next
+        this.length--
+        return
+      }
+      while (index++ < this.length) {
+        prev = current
+        current = current.next
+        if (current.data == item.data) {
+          current = current.next
+          //prev  被删除元素的前面一个元素
+          //current  被删除元素的后面面一个元素
+          prev.next = current
+          this.length--
+          return
+        }
+      }
+    }
+    //size方法获取链表长度
+    LinkedList.prototype.size = function () {
+      return this.length
+    }
+    //isEmpty  判断链表是否为空，为空返回true，否则为false
+    LinkedList.prototype.isEmpty = function () {
+      return this.length == 0
+    }
+  }
+  var n = new LinkedList()
+  n.append('abc')
+  n.append('bac')
+  n.append('cab')
+  n.insert('111', 3)
+  // var c = n.indexOf('1111')
+  // n.update(20, 2)
+  // console.log(n)
+  // n.removeAt(0)
+  // n.remove('abc')
+  console.log(n)
+  alert(n.isEmpty())
+</script>
+
+</html>

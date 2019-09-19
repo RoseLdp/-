@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+  //基于数组方式实现优先级队列
+  function PriorityQueue() {
+    this.items = []
+    function Parent(element, priority) {
+      this.element = element
+      this.priority = priority
+    }
+    //按priority大小进行优先级插入
+    PriorityQueue.prototype.priorityPush = function (element, priority) {
+      var parent = new Parent(element, priority)
+      if (this.items.length == 0) {
+        this.items.push(parent)
+      } else {
+        var store = false
+        for (var i = 0; i < this.items.length; i++) {
+          if (parent.priority < this.items[i].priority) {
+            this.items.splice(i, 0, parent)
+            store = true
+            break
+          }
+        }
+        if (!store) {
+          this.items.push(parent)
+        }
+      }
+    }
+    //移除队列的第一（排在队列最前面的）项，并返回被移除的元素
+    Queue.prototype.dequeue = function () {
+      return this.items.shift()
+    }
+    //返回队列中第一个元素
+    Queue.prototype.front = function () {
+      return this.items[0]
+    }
+    //如果队列里没有任何元素返回true。否则返回false
+    Queue.prototype.isEmpty = function () {
+      return this.items.length == 0
+    }
+    // 返回队列里的元素个数，这个方法和数组的length属性类似
+    Queue.prototype.size = function () {
+      return this.items.length
+    }
+    // 将队列结构的内容以字符串形式返回
+    Queue.prototype.toString = function () {
+      var str = ''
+      for (var i = 0; i < this.items.length; i++) {
+        str += this.items[i].element + '-' + this.items[i].priority + ' '
+      }
+      return str
+    }
+  }
+  var n = new PriorityQueue()
+  n.priorityPush('张三', 6)
+  n.priorityPush('李四', 1)
+  n.priorityPush('王五', 11)
+  // console.log(n.items)
+  alert(n.items)
+</script>
+
+</html>
