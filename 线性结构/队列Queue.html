@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+  //基于数组实现队列结构（受限的线性结构）前端删除元素，后端插入元素，先进先出。
+  function Queue() {
+    this.items = []
+    //向队列尾部添加一个（或多个）新的项
+    Queue.prototype.enqueue = function (n) {
+      this.items.push(n)
+    }
+    //移除队列的第一（排在队列最前面的）项，并返回被移除的元素
+    Queue.prototype.dequeue = function () {
+      return this.items.shift()
+    }
+    //返回队列中第一个元素
+    Queue.prototype.front = function () {
+      return this.items[0]
+    }
+    //如果队列里没有任何元素返回true。否则返回false
+    Queue.prototype.isEmpty = function () {
+      return this.items.length == 0
+    }
+    // 返回队列里的元素个数，这个方法和数组的length属性类似
+    Queue.prototype.size = function () {
+      return this.items.length
+    }
+    // 将队列结构的内容以字符串形式返回
+    Queue.prototype.toString = function () {
+      var str = ''
+      for (var i = 0; i < this.items.length; i++) {
+        str += this.items[i] + ' '
+      }
+      return str
+    }
+  }
+  //面试题（花鼓传花）
+  //list 人  num 喊数    从1开始，当谁喊的数是num时，将会淘汰，后面的从淘汰的下一个继续从1开始，以此类推，直到留下并返回存在的最后一个
+  function fn(list, num) {
+    var q = new Queue()
+    for (var i = 0; i < list.length; i++) {
+      q.enqueue(list[i])
+    }
+    while (q.size() > 1) {
+      for (var i = 0; i < num - 1; i++) {
+        q.enqueue(q.dequeue())
+      }
+      q.dequeue()
+    }
+    return q.front()
+  }
+  var list = ['张三', '李四', '王五', '马老六', '田七']
+  console.log(fn(list, 5))
+</script>
+
+</html>
