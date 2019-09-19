@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+  //基于数组实现栈结构（受限的线性结构）只能对栈顶进行插入和删除
+  function Stack() {
+    this.list = []
+    //在栈顶加入
+    Stack.prototype.push = function (item) {
+      this.list.push(item)
+    }
+    //删除并返回栈顶元素
+    Stack.prototype.pop = function () {
+      return this.list.pop()
+    }
+    //返回栈顶的元素
+    Stack.prototype.peek = function () {
+      return this.list[this.list.length - 1]
+    }
+    //返回栈内有没有元素，有为false，没有为true
+    Stack.prototype.isEmpty = function () {
+      return this.list.length == 0
+    }
+    //返回栈的长度
+    Stack.prototype.size = function () {
+      return this.list.length
+    }
+    //清空栈
+    Stack.prototype.clear = function () {
+      this.list.length = 0
+    }
+    //将栈转为字符串
+    Stack.prototype.toString = function () {
+      var str = ''
+      for (var i = 0; i < this.list.length; i++) {
+        str += this.list[i] + ' '
+      }
+      return str
+    }
+  }
+  var s = new Stack()
+  s.push(1)
+  s.push(2)
+  // s.clear()
+  var a = s.toString()
+  console.log(a)
+</script>
+
+</html>
