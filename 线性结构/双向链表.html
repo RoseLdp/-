@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+  //封装双向链表
+  function DoubleLinkedList() {
+    function Item(element) {
+      this.prev = null
+      this.data = element
+      this.next = null
+    }
+    this.head = null
+    this.tail = null
+    this.length = 0
+
+    //链表尾部添加一项
+    DoubleLinkedList.prototype.append = function (element) {
+      var item = new Item(element)
+      if (this.length == 0) {
+        this.head = item
+        this.tail = item
+      } else {
+        item.prev = this.tail
+        this.tail.next = item
+        this.tail = item
+      }
+      this.length++
+    }
+
+    //toString返回字符串，参数0或者不填为正序，1为倒序
+    DoubleLinkedList.prototype.toString = function (num) {
+      if (num == 0 || String(num) == 'undefined') {
+        return this.forwardString()
+      } else if (num == 1) {
+        return this.backwordString()
+      } else {
+        return false
+      }
+    }
+
+    //forwardString正序返回字符串
+    DoubleLinkedList.prototype.forwardString = function () {
+      var current = this.head
+      var str = ''
+      while (current) { //如果current为有值就一直遍历下去
+        str += current.data + " "
+        current = current.next
+      }
+      return str
+    }
+
+    //backwordString反序返回字符串
+    DoubleLinkedList.prototype.backwordString = function () {
+      var current = this.tail
+      var str = ''
+      while (current) {
+        str += current.data + " "
+        current = current.prev
+      }
+      return str
+    }
+
+    //insert插入节点,element内容，position位置
+    DoubleLinkedList.prototype.insert = function (element, position) {
+      var item = new Item(element)
+      var current = this.head
+      if (position < 0 || position > this.length) { return false } //越界限制
+      if (this.length == 0) {
+        this.head = item
+        this.tail = item
+      } else {
+        if (position == 0) {
+          this.head = item
+          item.next = current
+          current.prev = item
+
+        } else if (position == this.length) {
+          var currentTail = this.tail
+          currentTail.next = item
+          item.prev = currentTail
+          this.tail = item
+
+          return
+        } else {
+          var index = 0
+          while (index++ < position) {
+            current = current.next
+          }
+          current.prev.next = item
+          item.prev = current.prev
+          item.next = current
+          current.prev = item
+
+        }
+      }
+      this.length++
+    }
+
+    //get返回对应位置的元素，position位置
+    DoubleLinkedList.prototype.get = function (position) {
+      if (position < 0 || position >= this.length) { return false }
+      var index = 0
+      var current = this.head
+      while (index++ < position) {
+        current = current.next
+      }
+      return current
+    }
+
+    //indexOf返回元素在链表中的位置，没有则返回-1，element参数值
+    DoubleLinkedList.prototype.indexOf = function (element) {
+      var index = 0
+      var current = this.head
+      while (current) {
+        if (current.data == element) {
+          return index
+        }
+        current = current.next
+        index++
+      }
+      return -1
+    }
+
+    //update 修改某个位置的元素,position位置,element修改的内容
+    DoubleLinkedList.prototype.update = function (element, position) {
+      var current = this.get(position)
+      current.data = element
+    }
+
+    //removeAt 根据位置删除某一节点，position位置,head为删除第一个，tail为删除最后一个
+    DoubleLinkedList.prototype.removeAt = function (position) {
+      var current = this.get(position)
+      if (current) {
+        if (position == 0 || position == 'head') {
+          this.head = current.next
+          current.next.prev = null
+        } else if (position == this.length - 1 || position == 'tail') {
+          this.tail = current.prev
+          current.prev.next = null
+        } else {
+          current.prev.next = current.next
+          current.next.prev = current.prev
+        }
+        this.length--
+      }
+    }
+
+    //remove 根据内容删除某一节点,element内容
+    DoubleLinkedList.prototype.remove = function (element) {
+      var current = this.head
+      var index = 0
+      while (index < this.length) {
+        if (current.data == element) {
+          console.log(current, index)
+          if (index == 0) {
+            this.head = current.next
+            current.next.prev = null
+          } else if (index == this.length - 1) {
+            this.tail = current.prev
+            current.prev.next = null
+          } else {
+            current.prev.next = current.next
+            current.next.prev = current.prev
+          }
+          this.length--
+        }
+        current = current.next
+        index++
+      }
+      return false
+    }
+
+    //isEmpty 查看链表中是否有节点，没有返回true，有则返回false
+    DoubleLinkedList.prototype.isEmpty = function () {
+      return this.length == 0
+    }
+
+    //size 返回链表长度
+    DoubleLinkedList.prototype.size = function () {
+      return this.length
+    }
+  }
+  var linkedList = new DoubleLinkedList()
+  linkedList.append('a')
+  linkedList.append('b')
+  linkedList.append('c')
+  linkedList.insert('A', 0)
+  linkedList.update('L', 1)
+  linkedList.remove('A')
+  console.log(linkedList)
+  alert(linkedList)
+</script>
+
+</html>
